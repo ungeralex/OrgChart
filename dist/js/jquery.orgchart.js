@@ -423,8 +423,8 @@
             return subObj;
         },
         //
-        getHierarchy ($chart) {
-            let $chart = $chart || this.$chart;
+        getHierarchy (chart) {
+            let $chart = chart || this.$chart;
             if (!$chart.find('.node:first')[0].id) {
                 return 'Error: Nodes of orghcart to be exported must have id attribute!';
             }
