@@ -1109,23 +1109,23 @@
         },
         // build the child nodes of specific node
         buildChildNode ($appendTo, nodeData, opts, callback) {
-            let opts = opts || $appendTo.closest('.orgchart').data('options');
+            let $opts = opts || $appendTo.closest('.orgchart').data('options');
             let data = nodeData.children || nodeData.siblings;
             $appendTo.find('td:first').attr('colspan', data.length * 2);
-            this.buildHierarchy($appendTo, { 'children': data }, 0, opts, callback);
+            this.buildHierarchy($appendTo, { 'children': data }, 0, $opts, callback);
         },
         // exposed method
         addChildren ($node, data, opts) {
             let that = this;
-            let opts = opts || $node.closest('.orgchart').data('options');
+            let $opts = opts || $node.closest('.orgchart').data('options');
             let count = 0;
-            this.buildChildNode($node.closest('table'), data, opts, function() {
+            this.buildChildNode($node.closest('table'), data, $opts, function() {
                 if (++count === data.children.length) {
                     if (!$node.children('.bottomEdge').length) {
                         $node.append('<i class="edge verticalEdge bottomEdge fa"></i>');
                     }
                     if (!$node.find('.symbol').length) {
-                        $node.children('.title').prepend('<i class="fa '+ opts.parentNodeSymbol + ' symbol"></i>');
+                        $node.children('.title').prepend('<i class="fa '+ $opts.parentNodeSymbol + ' symbol"></i>');
                     }
                     that.showChildren($node);
                 }
@@ -1174,7 +1174,7 @@
         // build the sibling nodes of specific node
         buildSiblingNode ($nodeChart, nodeData, opts, callback) {
             let that = this;
-            let opts = opts || $nodeChart.closest('.orgchart').data('options');
+            let $opts = opts || $nodeChart.closest('.orgchart').data('options');
             let newSiblingCount = nodeData.siblings ? nodeData.siblings.length : nodeData.children.length;
             let existingSibligCount = $nodeChart.parent().is('td') ? $nodeChart.closest('tr').children().length : 1;
             let siblingCount = existingSibligCount + newSiblingCount;
@@ -1184,7 +1184,7 @@
                 let $parent = $nodeChart.closest('tr').prevAll('tr:last');
                 $nodeChart.closest('tr').prevAll('tr:lt(2)').remove();
                 let childCount = 0;
-                this.buildChildNode($nodeChart.parent().closest('table'), nodeData, opts, function() {
+                this.buildChildNode($nodeChart.parent().closest('table'), nodeData, $opts, function() {
                     if (++childCount === newSiblingCount) {
                         let $siblingTds = $nodeChart.parent().closest('table').children('tr:last').children('td');
                         if (existingSibligCount > 1) {
@@ -1201,7 +1201,7 @@
                 });
             } else { // build the sibling nodes and parent node for the specific ndoe
                 let nodeCount = 0;
-                this.buildHierarchy($nodeChart.closest('.orgchart'), nodeData, 0, opts, function() {
+                this.buildHierarchy($nodeChart.closest('.orgchart'), nodeData, 0, $opts, function() {
                     if (++nodeCount === siblingCount) {
                         that.complementLine($nodeChart.next().children('tr:last')
                             .children().eq(insertPostion).after($('<td colspan="2">')
